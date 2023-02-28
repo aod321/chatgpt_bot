@@ -7,6 +7,9 @@ import json
 import pandas as pd
 import os
 import argparse
+import asyncio
+import uvloop
+asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 # %% argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--email", type=str)
@@ -49,19 +52,38 @@ for t_n in range(repeat_per_question):
     answer_trial_dict[t_n] = []
 for q_n, question in tqdm(enumerate(questions)):
     for t_n in range(repeat_per_question):
+        #  Configure access to the ChatGPT
+        chatbot = Chatbot(config={
+        "email": email,
+        "password": password,
+        "paid": use_paid,
+        })
         full_question = f"{raw_prompt}{question}"
         # Start asking
         response = ""
-        for data in chatbot.ask(
-          full_question
-        ):
-            response = data["message"]
+        failed = True
+        failed_count = 0
+        while failed:
+            try:
+                for data in chatbot.ask(
+                full_question
+                ):
+                    response = data["message"]
+                failed = False
+            except Exception as e:
+                if e is not KeyboardInterrupt:
+                    failed_count+=1
+                    print("Error: Ask Failed, try again")
+                    failed = True
+                    if failed_count > 10:
+                        print("Error: Ask Failed for 10 times, skip this question")
+                        break
         try:
             # re find {Yes} or {No}
             answer = re.findall("{(.*?)}", response)[0]
-            print(f"Answer found: {answer}")
-        except:
-            print(f"Waring No Answer found: {response}")
+            print(f"Automatic Anwser Analysis Succeed, ChatGPT think the answer is: {answer}")
+        except Exception as e:
+            print(f"Automatic Anwser Analysis Failed, you can manually find the answer later: {response}")
             answer = "NotFound"
         # Wrte Response to json
         raw_response_dict = {
