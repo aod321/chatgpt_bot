@@ -7,9 +7,6 @@ import json
 import pandas as pd
 import os
 import argparse
-import asyncio
-import uvloop
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 # %% argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--email", type=str)
