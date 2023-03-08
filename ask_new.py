@@ -13,8 +13,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--key", type=str)
 # parser.add_argument("--select_model2", type=int, default=0)
 parser.add_argument("--repeat_per_question", type=int, default=1)
-# args = parser.parse_args(args=[])
-args = parser.parse_args()
+args = parser.parse_args(args=[])
+# args = parser.parse_args()
 repeat_per_question = args.repeat_per_question
 # selected_model2 = bool(args.select_model2)
 key = args.key
