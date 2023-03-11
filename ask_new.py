@@ -75,6 +75,7 @@ for q_n, question in tqdm(enumerate(questions)):
                 # Wait for 1 second
                 time.sleep(1)
             except Exception as e:
+                print(f"Error: {e}")
                 if e is not KeyboardInterrupt:
                     failed_count+=1
                     print("Error: Ask Failed, try again, after 10 seconds")
