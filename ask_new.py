@@ -8,6 +8,7 @@ import json
 import pandas as pd
 import os
 import argparse
+import time
 # %% argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--key", type=str)
@@ -71,10 +72,13 @@ for q_n, question in tqdm(enumerate(questions)):
                 )
                 response = result['choices'][0]['message']['content']
                 failed = False
+                # Wait for 1 second
+                time.sleep(1)
             except Exception as e:
                 if e is not KeyboardInterrupt:
                     failed_count+=1
-                    print("Error: Ask Failed, try again")
+                    print("Error: Ask Failed, try again, after 10 seconds")
+                    time.sleep(10)
                     failed = True
                     if failed_count > 10:
                         print("Error: Ask Failed for 10 times, skip this question")
