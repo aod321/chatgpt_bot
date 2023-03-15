@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--email", type=str)
 parser.add_argument("--password", type=str)
 parser.add_argument("--use_paid_model", type=int, default=0)
+parser.add_argument("--use_gpt4_model", type=int, default=1)
 parser.add_argument("--repeat_per_question", type=int, default=1)
 # args = parser.parse_args(args=[])
 args = parser.parse_args()
@@ -19,12 +20,22 @@ repeat_per_question = args.repeat_per_question
 email = args.email
 password = args.password
 use_paid = bool(args.use_paid_model)
+use_gpt4 = bool(args.use_gpt4_model)
 # %% Configure access to the ChatGPT
-chatbot = Chatbot(config={
+config = {
   "email": email,
   "password": password,
   "paid": use_paid,
-})
+}
+if use_gpt4:
+    config = {
+    "email": email,
+    "password": password,
+    "paid": False,
+    "collect_analytics": True,
+    "model": "gpt-4"
+    }
+chatbot = Chatbot(config=config)
 # %% Create folder to save the data
 raw_json_output_folder = "raw_json_output"
 answer_sheet_folder = "answer_sheet"
@@ -50,11 +61,7 @@ for t_n in range(repeat_per_question):
 for q_n, question in tqdm(enumerate(questions)):
     for t_n in range(repeat_per_question):
         #  Configure access to the ChatGPT
-        chatbot = Chatbot(config={
-        "email": email,
-        "password": password,
-        "paid": use_paid,
-        })
+        chatbot = Chatbot(config=config)
         full_question = f"{raw_prompt}{question}"
         # Start asking
         response = ""
