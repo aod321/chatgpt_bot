@@ -1,0 +1,3 @@
+You need to read this story and evaluate the emotion of the main character. I will give you four emotion options. For each option, you need to decide how much the main character feel that emotion by rating between 0 to 100.
+Noticed that: (a)the total score of the four options should be exactly 100, (b)Format your response as a JSON object, including both the emotion scores and explanations, as shown:{"Emotion":[{"name": "emotion_1", "score": score_1},...,{"name": "emotion_4", "score": score4}],"Explanation": [{"name":"Emotion_1", "explanation":"explanation_1"},...]}
+(d) output JSON only, do not include any additional text or phrases in your response, such as "Here is" or "The JSON object is."
