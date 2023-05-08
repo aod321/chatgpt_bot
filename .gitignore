@@ -6,7 +6,8 @@ account.txt
 __pycache__/
 *.py[cod]
 *$py.class
-
+gpt3_output_raw_data/
+gpt3_output/
 # C extensions
 *.so
 
